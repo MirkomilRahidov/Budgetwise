@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Login" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="auth-container" style="max-width: 500px; margin: 0 auto;">
+        <h2 id="login-title" class="text-center mb-4" style="color: var(--neon-green); font-family: 'Orbitron', sans-serif;">
+            {% trans "Login" %}
+        </h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group mb-4">
+                <label for="username" id="username-label" style="color: var(--text-secondary);">
+                    {% trans "Username" %}
+                </label>
+                <input type="text" name="username" id="username" class="form-control" required
+                       style="background-color: rgba(13, 2, 33, 0.8);
+                              border: 1px solid var(--neon-blue);
+                              color: var(--text-primary);
+                              padding: 12px;
+                              box-shadow: 0 0 10px rgba(5, 217, 232, 0.2);">
+            </div>
+            
+            <div class="form-group mb-4">
+                <label for="password" id="password-label" style="color: var(--text-secondary);">
+                    {% trans "Password" %}
+                </label>
+                <input type="password" name="password" id="password" class="form-control" required
+                       style="background-color: rgba(13, 2, 33, 0.8);
+                              border: 1px solid var(--neon-blue);
+                              color: var(--text-primary);
+                              padding: 12px;
+                              box-shadow: 0 0 10px rgba(5, 217, 232, 0.2);">
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100 py-3" id="login-button"
+                    style="background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+                           border: none;
+                           box-shadow: 0 0 15px var(--neon-pink);
+                           font-weight: 600;
+                           letter-spacing: 1px;
+                           text-transform: uppercase;
+                           margin-bottom: 20px;">
+                {% trans "Login" %}
+            </button>
+        </form>
+        
+        <p id="register-link" class="text-center" style="color: var(--text-secondary);">
+            {% trans "Don't have an account?" %}
+            <a href="{% url 'users:register' %}" id="register-text" 
+               style="color: var(--neon-green);
+                      text-decoration: none;
+                      transition: all 0.3s ease;">
+                {% trans "Register here" %}
+            </a>
+        </p>
+
+        <div class="language-switcher mt-4 d-flex justify-content-center gap-2">
+            <button id="en-btn" class="btn" 
+                    style="background: rgba(13, 2, 33, 0.7);
+                           border: 1px solid var(--neon-blue);
+                           color: var(--neon-blue);
+                           box-shadow: 0 0 10px var(--neon-blue);
+                           min-width: 100px;">
+                English
+            </button>
+            <button id="ru-btn" class="btn" 
+                    style="background: rgba(13, 2, 33, 0.7);
+                           border: 1px solid var(--neon-purple);
+                           color: var(--neon-purple);
+                           box-shadow: 0 0 10px var(--neon-purple);
+                           min-width: 100px;">
+                Русский
+            </button>
+            <button id="uz-btn" class="btn" 
+                    style="background: rgba(13, 2, 33, 0.7);
+                           border: 1px solid var(--neon-green);
+                           color: var(--neon-green);
+                           box-shadow: 0 0 10px var(--neon-green);
+                           min-width: 100px;">
+                O'zbekcha
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const translations = {
+        en: {
+            "login-title": "Login",
+            "username-label": "Username",
+            "password-label": "Password",
+            "login-button": "Login",
+            "register-text": "Register here",
+            "register-link": "Don't have an account?"
+        },
+        ru: {
+            "login-title": "Войти",
+            "username-label": "Имя пользователя",
+            "password-label": "Пароль",
+            "login-button": "Войти",
+            "register-text": "Зарегистрироваться здесь",
+            "register-link": "Нет аккаунта?"
+        },
+        uz: {
+            "login-title": "Kirish",
+            "username-label": "Foydalanuvchi nomi",
+            "password-label": "Parol",
+            "login-button": "Kirish",
+            "register-text": "Ro'yxatdan o'tish",
+            "register-link": "Akkountingiz yo'qmi?"
+        }
+    };
+
+    let currentLanguage = "en";  
+
+    function translatePage(language) {
+        Object.keys(translations[language]).forEach(function(key) {
+            let element = document.getElementById(key);
+            if (element) {
+                element.textContent = translations[language][key];
+            }
+        });
+    }
+
+    document.getElementById('en-btn').addEventListener('click', function() {
+        currentLanguage = 'en';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('ru-btn').addEventListener('click', function() {
+        currentLanguage = 'ru';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('uz-btn').addEventListener('click', function() {
+        currentLanguage = 'uz';
+        translatePage(currentLanguage);
+    });
+
+    // Add hover effect for register link
+    document.getElementById('register-text').addEventListener('mouseenter', function() {
+        this.style.textShadow = '0 0 10px var(--neon-green)';
+    });
+    document.getElementById('register-text').addEventListener('mouseleave', function() {
+        this.style.textShadow = 'none';
+    });
+
+    translatePage(currentLanguage);
+</script>
+{% endblock %}

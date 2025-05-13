@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign Up" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 id="register-title">{% trans "Register" %}</h2>
+
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <p id="form-errors-message">{% trans "There are errors in the form. Please correct the following:" %}</p>
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary" id="register-button">{% trans "Register" %}</button>
+    </form>
+
+    <p id="already-have-account">{% trans "Already have an account?" %} <a href="{% url 'users:login' %}" id="login-link">{% trans "Login" %}</a></p>
+
+    <div class="language-switcher mt-4">
+        <button id="en-btn" class="btn btn-light">English</button>
+        <button id="ru-btn" class="btn btn-light">Русский</button>
+        <button id="uz-btn" class="btn btn-light">O'zbekcha</button>
+    </div>
+</div>
+<script type="text/javascript">
+    const translations = {
+        en: {
+            "register-title": "Register",
+            "form-errors-message": "There are errors in the form. Please correct the following:",
+            "register-button": "Register",
+            "already-have-account": "Already have an account?",
+            "login-link": "Login"
+        },
+        ru: {
+            "register-title": "Регистрация",
+            "form-errors-message": "В форме есть ошибки. Пожалуйста, исправьте следующие:",
+            "register-button": "Зарегистрироваться",
+            "already-have-account": "Уже есть аккаунт?",
+            "login-link": "Войти"
+        },
+        uz: {
+            "register-title": "Ro'yxatdan o'tish",
+            "form-errors-message": "Formada xatoliklar mavjud. Quyidagilarni to'g'rilashni iltimos:",
+            "register-button": "Ro'yxatdan o'tish",
+            "already-have-account": "Allaqachon akkauntingiz bormi?",
+            "login-link": "Kirish"
+        }
+    };
+
+    let currentLanguage = "en";  
+
+    function translatePage(language) {
+        Object.keys(translations[language]).forEach(function(key) {
+            let element = document.getElementById(key);
+            if (element) {
+                element.textContent = translations[language][key];
+                // Update placeholder if exists
+                if (element.placeholder) {
+                    element.placeholder = translations[language][key];
+                }
+            }
+        });
+    }
+
+    document.getElementById('en-btn').addEventListener('click', function() {
+        currentLanguage = 'en';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('ru-btn').addEventListener('click', function() {
+        currentLanguage = 'ru';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('uz-btn').addEventListener('click', function() {
+        currentLanguage = 'uz';
+        translatePage(currentLanguage);
+    });
+
+    translatePage(currentLanguage);
+</script>
+{% endblock %}

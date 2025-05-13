@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Profile" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 id="welcome-message">{% trans "Welcome" %}, {{ user.username }}</h2>
+    <p><strong id="first-name-label">{% trans "First Name" %}:</strong> {{ user.first_name }}</p>
+    <p><strong id="last-name-label">{% trans "Last Name" %}:</strong> {{ user.last_name }}</p>
+    <p><strong id="joined-label">{% trans "Joined" %}:</strong> {{ user.date_joined|date:"Y-m-d" }}</p>
+
+    <a class="btn" href="{% url 'users:profile_update' %}" id="update-profile-button">✏️ {% trans 'Update Profile' %}</a>
+    <a class="button" href="{% url 'card_list' %}" id="home-button">🏠 {% trans 'Home' %}</a>
+    <a class="button" href="{% url 'users:logout' %}" id="logout-button">🚪 {% trans 'Logout' %}</a>
+
+    <div class="language-switcher mt-4">
+        <button id="en-btn" class="btn btn-light">English</button>
+        <button id="ru-btn" class="btn btn-light">Русский</button>
+        <button id="uz-btn" class="btn btn-light">O'zbekcha</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // Translations object
+    const translations = {
+        en: {
+            "welcome-message": "Welcome",
+            "first-name-label": "First Name",
+            "last-name-label": "Last Name",
+            "email-label": "Email",
+            "joined-label": "Joined",
+            "update-profile-button": "Update Profile",
+            "home-button": "Home",
+            "logout-button": "Logout"
+        },
+        ru: {
+            "welcome-message": "Добро пожаловать",
+            "first-name-label": "Имя",
+            "last-name-label": "Фамилия",
+            "email-label": "Электронная почта",
+            "joined-label": "Присоединился",
+            "update-profile-button": "Обновить профиль",
+            "home-button": "Главная",
+            "logout-button": "Выйти"
+        },
+        uz: {
+            "welcome-message": "Xush kelibsiz",
+            "first-name-label": "Ism",
+            "last-name-label": "Familiya",
+            "email-label": "Email",
+            "joined-label": "Qo'shildi",
+            "update-profile-button": "Profilni yangilash",
+            "home-button": "Bosh sahifa",
+            "logout-button": "Chiqish"
+        }
+    };
+
+    let currentLanguage = "en";  
+
+    function translatePage(language) {
+        Object.keys(translations[language]).forEach(function(key) {
+            let element = document.getElementById(key);
+            if (element) {
+                element.textContent = translations[language][key];
+                // Update the placeholder text if it exists
+                if (element.placeholder) {
+                    element.placeholder = translations[language][key];
+                }
+            }
+        });
+    }
+
+    document.getElementById('en-btn').addEventListener('click', function() {
+        currentLanguage = 'en';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('ru-btn').addEventListener('click', function() {
+        currentLanguage = 'ru';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('uz-btn').addEventListener('click', function() {
+        currentLanguage = 'uz';
+        translatePage(currentLanguage);
+    });
+
+    translatePage(currentLanguage);
+</script>
+{% endblock %}

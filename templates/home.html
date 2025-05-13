@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Your Cards" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 id="your-cards-title">{% trans "Your Cards" %}</h2>
+        <a href="{% url 'card_create' %}" class="btn btn-success" id="add-new-card-btn" 
+           style="background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+                  border: none;
+                  box-shadow: 0 0 15px var(--neon-green);
+                  font-weight: 600;
+                  letter-spacing: 1px;">
+           <i class="fas fa-plus-circle me-2"></i>{% trans "+ Add New Card" %}
+        </a>
+    </div>
+
+    <div class="row">
+        {% for card in cards %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg border-0 rounded-4 hover-card" 
+                     style="background: rgba(13, 2, 33, 0.7);
+                            border: 1px solid var(--neon-purple);
+                            box-shadow: 0 0 20px rgba(211, 0, 197, 0.3);
+                            transition: all 0.3s ease;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center" style="color: var(--neon-green); 
+                                                                  font-family: 'Orbitron', sans-serif;
+                                                                  text-transform: uppercase;
+                                                                  letter-spacing: 1px;">
+                            {{ card.name }}
+                        </h5>
+                        <p class="card-text text-center" id="initial-balance-text" 
+                           style="color: var(--text-secondary);">
+                           {% trans "Initial Balance" %}: <span style="color: var(--neon-blue);">{{ card.boshlangich_qoldiq }}</span>
+                        </p>
+                        <div class="d-flex justify-content-center">
+                            <a href="{% url 'card_details' card.id %}" class="btn btn-primary px-4 py-2" id="view-details-btn"
+                               style="background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+                                      border: none;
+                                      box-shadow: 0 0 15px var(--neon-pink);
+                                      font-weight: 600;
+                                      letter-spacing: 1px;
+                                      text-transform: uppercase;">
+                               <i class="fas fa-eye me-2"></i>{% trans "View Details" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+        <div class="pagination">
+            <span class="page-item {% if not cards.has_previous %}disabled{% endif %}">
+                <a class="page-link" 
+                   href="?page={{ cards.previous_page_number }}" 
+                   {% if not cards.has_previous %}aria-disabled="true" tabindex="-1"{% endif %} 
+                   id="previous-page-btn"
+                   style="background: rgba(13, 2, 33, 0.7);
+                          border: 1px solid var(--neon-blue);
+                          color: var(--neon-blue);
+                          margin-right: 10px;
+                          box-shadow: 0 0 10px var(--neon-blue);">
+                   <i class="fas fa-arrow-left me-2"></i>{% trans "Previous" %}
+                </a>
+            </span>
+            <span class="page-item {% if not cards.has_next %}disabled{% endif %}">
+                <a class="page-link" 
+                   href="?page={{ cards.next_page_number }}" 
+                   {% if not cards.has_next %}aria-disabled="true" tabindex="-1"{% endif %} 
+                   id="next-page-btn"
+                   style="background: rgba(13, 2, 33, 0.7);
+                          border: 1px solid var(--neon-pink);
+                          color: var(--neon-pink);
+                          box-shadow: 0 0 10px var(--neon-pink);">
+                   <i class="fas fa-arrow-right me-2"></i>{% trans "Next" %}
+                </a>
+            </span>
+        </div>
+    </div>
+
+    <div class="language-switcher mt-4 d-flex justify-content-center gap-2">
+        <button id="en-btn" class="btn" 
+                style="background: rgba(13, 2, 33, 0.7);
+                       border: 1px solid var(--neon-blue);
+                       color: var(--neon-blue);
+                       box-shadow: 0 0 10px var(--neon-blue);">
+            English
+        </button>
+        <button id="ru-btn" class="btn" 
+                style="background: rgba(13, 2, 33, 0.7);
+                       border: 1px solid var(--neon-purple);
+                       color: var(--neon-purple);
+                       box-shadow: 0 0 10px var(--neon-purple);">
+            Русский
+        </button>
+        <button id="uz-btn" class="btn" 
+                style="background: rgba(13, 2, 33, 0.7);
+                       border: 1px solid var(--neon-green);
+                       color: var(--neon-green);
+                       box-shadow: 0 0 10px var(--neon-green);">
+            O'zbekcha
+        </button>
+    </div>
+</div>
+
+<script>
+    const translations = {
+        en: {
+            "your-cards-title": "Your Cards",
+            "add-new-card-btn": "+ Add New Card",
+            "initial-balance-text": "Initial Balance",
+            "view-details-btn": "View Details",
+            "previous-page-btn": "Previous",
+            "next-page-btn": "Next",
+        },
+        ru: {
+            "your-cards-title": "Ваши Карты",
+            "add-new-card-btn": "+ Добавить новую карту",
+            "initial-balance-text": "Начальный баланс",
+            "view-details-btn": "Просмотр деталей",
+            "previous-page-btn": "Предыдущая",
+            "next-page-btn": "Следующая",
+        },
+        uz: {
+            "your-cards-title": "Sizning Kartalaringiz",
+            "add-new-card-btn": "+ Yangi karta qo'shish",
+            "initial-balance-text": "Boshlang'ich balans",
+            "view-details-btn": "Tafsilotlarni ko'rish",
+            "previous-page-btn": "Oldingi",
+            "next-page-btn": "Keyingi",
+        }
+    };
+
+    let currentLanguage = "en"; 
+    function translatePage(language) {
+        Object.keys(translations[language]).forEach(function(key) {
+            let element = document.getElementById(key);
+            if (element) {
+                element.textContent = translations[language][key];
+            }
+        });
+    }
+
+    document.getElementById('en-btn').addEventListener('click', function() {
+        currentLanguage = 'en';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('ru-btn').addEventListener('click', function() {
+        currentLanguage = 'ru';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('uz-btn').addEventListener('click', function() {
+        currentLanguage = 'uz';
+        translatePage(currentLanguage);
+    });
+
+    document.querySelectorAll('.hover-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.boxShadow = '0 0 30px var(--neon-purple)';
+            this.style.borderColor = 'var(--neon-green)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 0 20px rgba(211, 0, 197, 0.3)';
+            this.style.borderColor = 'var(--neon-purple)';
+        });
+    });
+
+    translatePage(currentLanguage);
+</script>
+
+{% endblock %}

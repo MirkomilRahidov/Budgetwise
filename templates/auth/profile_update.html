@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Edit Profile" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 id="update-profile-title">{% trans "Update Profile" %}</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <input type="text" name="first_name" value="{{ user.first_name }}" id="first-name" placeholder="{% trans 'First Name' %}" required><br>
+        <input type="text" name="last_name" value="{{ user.last_name }}" id="last-name" placeholder="{% trans 'Last Name' %}" required><br>
+        <input type="email" name="email" value="{{ user.email }}" id="email" placeholder="{% trans 'Email' %}" required><br>
+        <input type="file" name="avatar" id="avatar"><br>
+        
+        <button type="submit" id="save-changes-button">{% trans 'Save Changes' %}</button>
+    </form>
+
+    <a class="btn" href="{% url 'card_list' %}" id="home-link">🏠 {% trans 'Home' %}</a>
+    <a class="btn" href="{% url 'users:logout' %}" style="background: #dc3545;" id="logout-link">🚪 {% trans 'Logout' %}</a>
+
+    <div class="language-switcher mt-4">
+        <button id="en-btn" class="btn btn-light">English</button>
+        <button id="ru-btn" class="btn btn-light">Русский</button>
+        <button id="uz-btn" class="btn btn-light">O'zbekcha</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const translations = {
+        en: {
+            "update-profile-title": "Update Profile",
+            "first-name": "First Name",
+            "last-name": "Last Name",
+            "email": "Email",
+            "avatar": "Avatar",
+            "save-changes-button": "Save Changes",
+            "home-link": "Home",
+            "logout-link": "Logout"
+        },
+        ru: {
+            "update-profile-title": "Обновить профиль",
+            "first-name": "Имя",
+            "last-name": "Фамилия",
+            "email": "Электронная почта",
+            "avatar": "Аватар",
+            "save-changes-button": "Сохранить изменения",
+            "home-link": "Главная",
+            "logout-link": "Выйти"
+        },
+        uz: {
+            "update-profile-title": "Profilni yangilash",
+            "first-name": "Ism",
+            "last-name": "Familiya",
+            "email": "Email",
+            "avatar": "Avatar",
+            "save-changes-button": "O'zgarishlarni saqlash",
+            "home-link": "Bosh sahifa",
+            "logout-link": "Chiqish"
+        }
+    };
+
+    let currentLanguage = "en";  
+
+    function translatePage(language) {
+        Object.keys(translations[language]).forEach(function(key) {
+            let element = document.getElementById(key);
+            if (element) {
+                element.textContent = translations[language][key];
+                // Update placeholder if exists
+                if (element.placeholder) {
+                    element.placeholder = translations[language][key];
+                }
+            }
+        });
+    }
+
+    document.getElementById('en-btn').addEventListener('click', function() {
+        currentLanguage = 'en';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('ru-btn').addEventListener('click', function() {
+        currentLanguage = 'ru';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('uz-btn').addEventListener('click', function() {
+        currentLanguage = 'uz';
+        translatePage(currentLanguage);
+    });
+
+    translatePage(currentLanguage);
+</script>
+{% endblock %}

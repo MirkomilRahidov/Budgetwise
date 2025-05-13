@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Delete Card" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="language-switcher mt-4">
+        <button id="en-btn" class="btn btn-light">English</button>
+        <button id="ru-btn" class="btn btn-light">Русский</button>
+        <button id="uz-btn" class="btn btn-light">O'zbekcha</button>
+    </div>
+    <h2 id="delete-card-title">{% trans "Are you sure you want to delete" %} "{{ object.name }}"?</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" id="delete-button">{% trans "Delete" %}</button>
+        <a href="{% url 'card_list' %}" class="btn btn-secondary ms-2" id="cancel-button">{% trans "Cancel" %}</a>
+    </form>
+</div>
+
+{% block extra_js %}
+<script type="text/javascript">
+    const translations = {
+        en: {
+            "delete-card-title": "Are you sure you want to delete",
+            "delete-button": "Delete",
+            "cancel-button": "Cancel"
+        },
+        ru: {
+            "delete-card-title": "Вы уверены, что хотите удалить",
+            "delete-button": "Удалить",
+            "cancel-button": "Отменить"
+        },
+        uz: {
+            "delete-card-title": "O'chirishni xohlayapsizmi",
+            "delete-button": "O'chirish",
+            "cancel-button": "Bekor qilish"
+        }
+    };
+
+    let currentLanguage = "en";  
+
+    function translatePage(language) {
+        Object.keys(translations[language]).forEach(function(key) {
+            let element = document.getElementById(key);
+            if (element) {
+                element.textContent = translations[language][key];
+                if (element.placeholder) {
+                    element.placeholder = translations[language][key];
+                }
+            }
+        });
+    }
+
+    document.getElementById('en-btn').addEventListener('click', function() {
+        currentLanguage = 'en';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('ru-btn').addEventListener('click', function() {
+        currentLanguage = 'ru';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('uz-btn').addEventListener('click', function() {
+        currentLanguage = 'uz';
+        translatePage(currentLanguage);
+    });
+
+    translatePage(currentLanguage);
+</script>
+{% endblock %}
+{% endblock %}

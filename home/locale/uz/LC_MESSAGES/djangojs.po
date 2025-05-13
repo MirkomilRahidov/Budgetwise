@@ -1,0 +1,5 @@
+msgid "Hello, welcome to BudgetWise!"
+msgstr "Salom, BudgetWise-ga xush kelibsiz!"
+
+msgid "Submit"
+msgstr "Yuborish"

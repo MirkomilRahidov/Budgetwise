@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Add Card" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 id="add-card-title">{% trans "Add New Card" %}</h2>
+    <div class="language-switcher mt-4">
+        <button id="en-btn" class="btn btn-light">English</button>
+        <button id="ru-btn" class="btn btn-light">Русский</button>
+        <button id="uz-btn" class="btn btn-light">O'zbekcha</button>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success" id="create-button">{% trans "Create" %}</button>
+    </form>
+</div>
+
+{% block extra_js %}
+<script type="text/javascript">
+    const translations = {
+        en: {
+            "add-card-title": "Add New Card",
+            "create-button": "Create"
+        },
+        ru: {
+            "add-card-title": "Добавить новую карточку",
+            "create-button": "Создать"
+        },
+        uz: {
+            "add-card-title": "Yangi kartani qo'shish",
+            "create-button": "Yaratish"
+        }
+    };
+
+    let currentLanguage = "en";  
+    function translatePage(language) {
+        Object.keys(translations[language]).forEach(function(key) {
+            let element = document.getElementById(key);
+            if (element) {
+                element.textContent = translations[language][key];
+            }
+        });
+    }
+
+    document.getElementById('en-btn').addEventListener('click', function() {
+        currentLanguage = 'en';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('ru-btn').addEventListener('click', function() {
+        currentLanguage = 'ru';
+        translatePage(currentLanguage);
+    });
+
+    document.getElementById('uz-btn').addEventListener('click', function() {
+        currentLanguage = 'uz';
+        translatePage(currentLanguage);
+    });
+
+    translatePage(currentLanguage);
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Card Details - BudgetWise" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4" id="card-details-title">{% trans "Card Details" %} - {{ card.name }}</h2>
+
+    <div class="language-switcher mt-4">
+        <button id="en-btn" class="btn btn-light">English</button>
+        <button id="ru-btn" class="btn btn-light">Русский</button>
+        <button id="uz-btn" class="btn btn-light">O'zbekcha</button>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <h5 class="text-center" id="current-balance">{% trans "Current Balance" %}</h5>
+            <p class="text-center display-6">{{ card.boshlangich_qoldiq }}</p>
+        </div>
+
+        <div class="col-md-4">
+            <h5 class="text-center" id="total-income">{% trans "Total Income" %}</h5>
+            <p class="text-center display-6">{{ income }}</p>
+        </div>
+
+        <div class="col-md-4">
+            <h5 class="text-center" id="total-expense">{% trans "Total Expense" %}</h5>
+            <p class="text-center display-6">{{ expense }}</p>
+        </div>
+    </div>
+
+    <h5 class="text-center" id="expense-breakdown">{% trans "Expense Breakdown by Category" %}</h5>
+    <ul class="list-group" id="expense-list">
+        {% for category, value in expense_categories.items %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ category }}: {{ value }}
+                <span class="badge bg-info rounded-pill">{{ value|floatformat:2 }} </span>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="mt-4">
+        <h4 class="text-center" id="add-income">{% trans "Add Income" %}</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ income_form.as_p }}
+            <button type="submit" name="income_submit" class="btn btn-success w-100" id="add-income-btn">{% trans "Add Income" %}</button>
+        </form>
+    </div>
+
+    <div class="mt-4">
+        <h4 class="text-center" id="add-expense">{% trans "Add Expense" %}</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ expense_form.as_p }}
+            <button type="submit" name="expense_submit" class="btn btn-danger w-100" id="add-expense-btn">{% trans "Add Expense" %}</button>
+        </form>
+    </div>
+
+    <div class="mt-4">
+        <h4 class="text-center" id="add-category">{% trans "Add Category" %}</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ category_form.as_p }}
+            <button type="submit" name="category_submit" class="btn btn-warning w-100" id="add-category-btn">{% trans "Add Category" %}</button>
+        </form>
+    </div>
+</div>
+<script>
+window.onload = function() {
+    const translations = {
+        en: {
+            "card-details-title": "Card Details - BudgetWise",
+            "current-balance": "Current Balance",
+            "total-income": "Total Income",
+            "total-expense": "Total Expense",
+            "expense-breakdown": "Expense Breakdown by Category",
+            "add-income": "Add Income",
+            "add-expense": "Add Expense",
+            "add-category": "Add Category",
+            "add-income-btn": "Add Income",
+            "add-expense-btn": "Add Expense",
+            "add-category-btn": "Add Category"
+        },
+        ru: {
+            "card-details-title": "Детали карты - BudgetWise",
+            "current-balance": "Текущий баланс",
+            "total-income": "Общий доход",
+            "total-expense": "Общие расходы",
+            "expense-breakdown": "Раз breakdown по категориям",
+            "add-income": "Добавить доход",
+            "add-expense": "Добавить расход",
+            "add-category": "Добавить категорию",
+            "add-income-btn": "Добавить доход",
+            "add-expense-btn": "Добавить расход",
+            "add-category-btn": "Добавить категорию"
+        },
+        uz: {
+            "card-details-title": "Karta tafsilotlari - BudgetWise",
+            "current-balance": "Joriy balans",
+            "total-income": "Jami daromad",
+            "total-expense": "Jami xarajat",
+            "expense-breakdown": "Xarajatlar bo'yicha tasnif",
+            "add-income": "Daromad qo'shish",
+            "add-expense": "Xarajat qo'shish",
+            "add-category": "Kategoriyani qo'shish",
+            "add-income-btn": "Daromad qo'shish",
+            "add-expense-btn": "Xarajat qo'shish",
+            "add-category-btn": "Kategoriyani qo'shish"
+        }
+    };
+
+    let currentLanguage = "en"; 
+
+    function translatePage(language) {
+        Object.keys(translations[language]).forEach(function(key) {
+            let element = document.getElementById(key);
+            if (element) {
+                element.textContent = translations[language][key];
+            }
+        });
+    }
+
+    const enBtn = document.getElementById('en-btn');
+    const ruBtn = document.getElementById('ru-btn');
+    const uzBtn = document.getElementById('uz-btn');
+
+    if (enBtn) {
+        enBtn.addEventListener('click', function() {
+            currentLanguage = 'en';
+            translatePage(currentLanguage);
+        });
+    }
+
+    if (ruBtn) {
+        ruBtn.addEventListener('click', function() {
+            currentLanguage = 'ru';
+            translatePage(currentLanguage);
+        });
+    }
+
+    if (uzBtn) {
+        uzBtn.addEventListener('click', function() {
+            currentLanguage = 'uz';
+            translatePage(currentLanguage);
+        });
+    }
+
+    translatePage(currentLanguage);
+}
+
+</script>
+{% endblock %}

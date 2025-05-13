@@ -1,0 +1,44 @@
+msgid "Income"
+msgstr "Доход"
+
+msgid "Expense"
+msgstr "Расход"
+
+msgid "name"
+msgstr "Имя"
+
+msgid "type"
+msgstr "Тип"
+
+msgid "user"
+msgstr "Пользователь"
+
+msgid "card_number"
+msgstr "Номер карты"
+
+msgid "expiry_date"
+msgstr "Срок годности"
+
+msgid "initial_balance"
+msgstr "Начальный баланс"
+
+msgid "created_at"
+msgstr "Дата создания"
+
+msgid "amount"
+msgstr "Сумма"
+
+msgid "comment"
+msgstr "Комментарий"
+
+msgid "date"
+msgstr "Дата"
+
+msgid "Category"
+msgstr "Категория"
+
+msgid "Income"
+msgstr "Доход"
+
+msgid "Expense"
+msgstr "Расход"

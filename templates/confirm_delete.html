@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}{% trans "Confirm Delete" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-3" id="delete-confirmation-title">{% trans "Are you sure you want to delete this?" %}</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" id="delete-button">{% trans "Yes, Delete" %}</button>
+        <a href="{% url 'card_list' %}" class="btn btn-secondary ms-2" id="cancel-button">{% trans "Cancel" %}</a>
+    </form>
+</div>
+
+<div class="language-selector mb-4">
+    <select id="language-select" class="form-control w-25">
+        <option value="en">English</option>
+        <option value="ru">Русский</option>
+        <option value="uz">O'zbekcha</option>
+    </select>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+    const translations = {
+        en: {
+            "delete-confirmation-title": "Are you sure you want to delete this?",
+            "delete-button": "Yes, Delete",
+            "cancel-button": "Cancel"
+        },
+        ru: {
+            "delete-confirmation-title": "Вы уверены, что хотите удалить это?",
+            "delete-button": "Да, удалить",
+            "cancel-button": "Отмена"
+        },
+        uz: {
+            "delete-confirmation-title": "Haqiqatan ham, buni o'chirishni xohlaysizmi?",
+            "delete-button": "Ha, o'chirish",
+            "cancel-button": "Bekor qilish"
+        }
+    };
+
+    function translatePage(language) {
+        for (let key in translations[language]) {
+            let element = document.getElementById(key);
+            if (element) {
+                element.textContent = translations[language][key];
+            }
+        }
+    }
+
+    document.getElementById("language-select").addEventListener("change", function(event) {
+        const selectedLanguage = event.target.value;
+        translatePage(selectedLanguage);  
+    });
+
+    translatePage("en");
+</script>
+{% endblock %}
