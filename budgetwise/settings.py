@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'budgetwise.wsgi.application'
 
 import dj_database_url
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    'default': dj_database_url.parse(os.getenv('DATABASE'))
 }
 
 AUTH_USER_MODEL = 'users.CustomUser'
